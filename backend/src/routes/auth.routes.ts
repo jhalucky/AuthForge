@@ -1,28 +1,20 @@
-import express from "express";
-
+import { Router } from "express";
 import {
   signupUser,
-  loginUser
+  loginUser,
+  getMe
 } from "../controllers/auth.controller";
 
-import { apiKeyMiddleware } from "../middlewares/apiKey.middleware";
+import  { verifyToken } from "../controllers/verify.controller";
 
-const router = express.Router();
+const router = Router();
 
+router.post("/signup", signupUser);
 
+router.post("/login", loginUser);
 
-router.post(
-  "/signup",
-  apiKeyMiddleware,
-  signupUser
-);
+router.get("/me", getMe);
 
-router.post(
-  "/login",
-  apiKeyMiddleware,
-  loginUser
-);
-
-
+router.post("/verify", verifyToken)
 
 export default router;
