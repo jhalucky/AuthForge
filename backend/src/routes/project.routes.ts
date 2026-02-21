@@ -1,14 +1,40 @@
 import express from "express";
+
 import {
   createProject,
-  getProjects
+  getProjects,
+  getProjectById,
 } from "../controllers/project.controller";
 
-import { authMiddleware } from "../middlewares/auth.middleware";
+import { verifyDeveloperToken } from "../middlewares/auth.middleware";
 
 const router = express.Router();
 
-router.post("/", authMiddleware, createProject);
-router.get("/", authMiddleware, getProjects);
+/**
+ * Create project
+ */
+router.post(
+  "/",
+  verifyDeveloperToken,
+  createProject
+);
+
+/**
+ * Get all projects
+ */
+router.get(
+  "/",
+  verifyDeveloperToken,
+  getProjects
+);
+
+/**
+ * Get single project
+ */
+router.get(
+  "/:id",
+  verifyDeveloperToken,
+  getProjectById
+);
 
 export default router;

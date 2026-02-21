@@ -1,5 +1,6 @@
-import { v4 as uuid } from "uuid";
+import crypto from "crypto";
 
-export function generateApiKey() {
-  return "sk_live_" + uuid().replace(/-/g, "");
-}
+export const generateApiKey = (prefix: string) => {
+  const random = crypto.randomBytes(32).toString("hex");
+  return `${prefix}_${random}`;
+};
