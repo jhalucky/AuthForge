@@ -3,6 +3,7 @@ import prisma from "../config/db";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { env } from "../config/env";
+import { AuthRequest } from "../middlewares/userAuth.middleware";
 
 
 // USER SIGNUP
@@ -125,33 +126,41 @@ export const loginUser = async (req: Request, res: Response) => {
 
 
 // GET CURRENT USER
-export const getMe = async (req: Request, res: Response) => {
+export const getMe = async (req: AuthRequest, res: Response) => {
   try {
-    const auth = req.headers.authorization;
+    const userId = req.userId;
 
-    if (!auth) {
+    if (!userId) {
       return res.status(401).json({
-        error: "No token"
+        error: "Unauthorized"
       });
     }
 
-    const token = auth.split(" ")[1];
-
-    const decoded = jwt.verify(token, env.JWT_SECRET) as any;
-
     const user = await prisma.user.findUnique({
       where: {
-        id: decoded.userId
+        id: userId
+      },
+      select: {
+        id: true,
+        email: true,
+        projectId: true,
+        createdAt: true
       }
     });
+
+    if (!user) {
+      return res.status(404).json({
+        error: "User not found"
+      });
+    }
 
     res.json({
       user
     });
 
   } catch (error) {
-    res.status(401).json({
-      error: "Invalid token"
+    res.status(500).json({
+      error: "Failed to fetch user"
     });
   }
 };
