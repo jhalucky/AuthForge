@@ -1,48 +1,23 @@
-import { AuthForge } from "./sdk/authforge";
+import { Routes, Route} from "react-router-dom";
 
-AuthForge.init({
-  publicKey: "pk_xxxxx",
-  baseUrl: "http://localhost:4000"
-});
-
-import { AuthProvider, useAuth } from "./sdk/AuthProvider";
-import LoginCard from "./components/LoginCard";
-
-function Dashboard() {
-
-  const { user } = useAuth();
-
-   if (!user) return null;
-
-  return (
-    <div className="text-white">
-      Logged in as {user.email}
-    </div>
-  );
-}
-
-function Content() {
-
-  const { user, loading } = useAuth();
-
-  if (loading) return null;
-
-  return user ? <Dashboard /> : <LoginCard />;
-}
+import Landing from "./pages/Landing";
+import Login from "./pages/Login";
+import Signup from "./pages/Signup";
+import Docs from "./pages/Docs";
 
 export default function App() {
-
   return (
+      <Routes>
 
-    <AuthProvider>
+        <Route path="/" element={<Landing />} />
 
-      <div className="dark bg-zinc-950 min-h-screen flex items-center justify-center">
+        <Route path="/login" element={<Login />} />
 
-        <Content />
+        <Route path="/signup" element={<Signup />} />
 
-      </div>
+        <Route path="/docs" element={<Docs />} />
 
-    </AuthProvider>
-
+      </Routes>
+  
   );
 }

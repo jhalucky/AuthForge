@@ -1,6 +1,6 @@
+import { env } from "./config/env";  // ← must be first import
 import app from "./app";
-import { env } from "./config/env";
 
-app.listen(process.env.PORT, () => {
+app.listen(env.PORT, () => {
   console.log("Server running on port", env.PORT);
 });

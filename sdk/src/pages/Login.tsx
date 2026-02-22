@@ -1,0 +1,10 @@
+import LoginCard from "../components/LoginCard";
+
+export default function Login() {
+  return (
+    <div className="min-h-screen bg-black text-white flex items-center justify-center">
+      <LoginCard />
+    </div>
+  );
+}
+

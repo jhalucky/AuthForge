@@ -1,52 +1,68 @@
 import { useState } from "react";
-import { Github } from "lucide-react";  
+import { Github } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
-export default function LoginCard() {
+export default function SignupCard() {
 
   const navigate = useNavigate();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleLogin = async () => {
+  const handleSignup = async () => {
 
-    console.log("Login:", email, password);
+    try {
+
+      const res = await fetch("http://localhost:4000/developer/signup", {
+
+        method: "POST",
+
+        headers: {
+          "Content-Type": "application/json",
+        },
+
+        body: JSON.stringify({
+          email,
+          password,
+        }),
+
+      });
+
+      const data = await res.json();
+
+      console.log(data);
+
+      navigate("/");
+
+    } catch (error) {
+
+      console.error(error);
+
+    }
 
   };
 
-  // const handleGoogle = () => {
-
-  //   window.location.href = "http://localhost:4000/auth/google";
-
-  // };
-
-  // const handleGithub = () => {
-
-  //   window.location.href = "http://localhost:4000/auth/github";
-
-  // };
 
   return (
+
     <div className="bg-zinc-950 border border-zinc-800 rounded-xl p-6 w-[380px] shadow-xl">
 
-      {/* Logo */}
-      <h1 className="text-2xl font-bold mb-1 text-white text-center">
-        AuthForge
+      <h1 className="text-2xl font-bold text-white mb-1">
+        Create account
       </h1>
 
-      <p className="text-zinc-400 mb-5 text-sm text-center">
-        Sign in to continue
+      <p className="text-zinc-400 mb-5 text-sm">
+        Sign up to AuthForge
       </p>
 
-      {/* Google button */}
+
+      {/* Google */}
 
       <button
-        onClick={() => {
+         onClick={() => {
           window.location.href = "http://localhost:4000/auth/google";
-        }
-        }
-        className="w-full mb-3 flex items-center justify-center gap-3 bg-white text-black py-2 rounded-md hover:bg-zinc-200 transition cursor-pointer"
+        }}
+        className="w-full mb-3 flex items-center justify-center gap-3 bg-white text-black py-2 rounded-md hover:bg-zinc-200 cursor-pointer"
       >
         <img
           src="https://www.svgrepo.com/show/475656/google-color.svg"
@@ -57,13 +73,13 @@ export default function LoginCard() {
       </button>
 
 
-      {/* GitHub button */}
+      {/* GitHub */}
 
       <button
         onClick={() => {
           window.location.href = "http://localhost:4000/auth/github";
         }}
-        className="w-full mb-4 flex items-center justify-center gap-3 bg-zinc-900 border border-zinc-700 text-white py-2 rounded-md hover:bg-zinc-800 transition cursor-pointer"
+        className="w-full mb-4 flex items-center justify-center gap-3 bg-zinc-900 border border-zinc-700 text-white py-2 rounded-md hover:bg-zinc-800 cursor-pointer"
       >
         <Github size={18} />
 
@@ -86,7 +102,7 @@ export default function LoginCard() {
       </div>
 
 
-      {/* Email login */}
+      {/* Email */}
 
       <input
         className="w-full p-2 mb-3 bg-zinc-900 border border-zinc-800 rounded-md text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-white"
@@ -95,9 +111,10 @@ export default function LoginCard() {
         onChange={(e) => setEmail(e.target.value)}
       />
 
+
       <input
         type="password"
-        className="w-full p-2 mb-4 bg-zinc-900 border border-zinc-800 rounded-md text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-white"
+        className="w-full p-2 mb-4 bg-zinc-900 border border-zinc-800 rounded-md text-white"
         placeholder="Password"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
@@ -105,27 +122,27 @@ export default function LoginCard() {
 
 
       <button
-        onClick={handleLogin}
-        className="w-full bg-white text-black py-2 rounded-md hover:bg-zinc-200 transition font-medium"
+        onClick={handleSignup}
+        className="w-full bg-white text-black py-2 rounded-md hover:bg-zinc-200 transition cursor-pointer"
       >
-        Continue with Email
+        Create account
       </button>
 
 
-      {/* Footer */}
-
       <p className="text-zinc-500 text-sm mt-4 text-center">
 
-        Don't have an account?  
-        
-       <span
-  onClick={() => navigate("/signup")}
-  className="text-white cursor-pointer ml-1 hover:underline"
->
-  Sign up
-</span>
+        Already have an account?
+
+        <span
+          onClick={() => navigate("/login")}
+          className="text-white cursor-pointer ml-1 hover:underline cursor-pointer"
+        >
+          Sign in
+        </span>
+
       </p>
 
     </div>
+
   );
 }
